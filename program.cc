@@ -36,6 +36,9 @@ void Program::print_self(){
             case OP_NEG:
                 cerr << "OP_NEG" << endl;
                 break;
+            case OP_POP:
+                cerr << "OP_POP" << endl;
+                break;
             case OP_CONST:
                 cerr << "OP_CONST ";
                 consts[code[++i]].print_self();
@@ -43,6 +46,12 @@ void Program::print_self(){
                 break;
             case OP_PRINT:
                 cerr << "OP_PRINT" << endl;
+                break;
+            case OP_SET_GLOBAL:
+                cerr << "OP_SET_GLOBAL " << (int)code[++i] << endl;
+                break;
+            case OP_GET_GLOBAL:
+                cerr << "OP_GET_GLOBAL " << (int)code[++i] << endl;
                 break;
         }
     }

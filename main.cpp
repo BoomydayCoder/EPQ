@@ -17,25 +17,29 @@ int main (int argc, char *argv[])
         else {
             bool parsed = drv.parse (*argv);
             if (!parsed) exp = drv.result;
-            else return parsed;
+            else return 1;
         }
     }   
     if (exp == nullptr){
         cerr << "No file passed" << endl;
         return 1;
     }
+   
 
     exp->print_self(); cerr << endl;
+
+    
     Compiler comp;
     comp.compile(exp);
     delete exp;
     
-    comp.prog.push_byte(OP_PRINT); // temporary, to print the result
     comp.prog.print_self(); cerr << endl;
     
     VM vm;
     vm.prog = comp.prog;
     return vm.run();
+
+    
     
     
 }

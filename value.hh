@@ -1,6 +1,9 @@
 #ifndef VALUE_H
 #define VALUE_H
 
+#include <variant>
+using namespace std;
+
 enum ValueType {
     V_INT,
 };
@@ -10,9 +13,7 @@ class Value {
         Value ();
         Value (int v);
         ValueType type;
-        union {
-            int v_int;
-        } val;
+        variant<int> val;
         void print_self();
         bool is_int();
 };

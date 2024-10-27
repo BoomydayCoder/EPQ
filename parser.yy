@@ -24,6 +24,7 @@
 
 %union {
     int ival;
+    string *sval;
     ExpTree *exptr;
     
 };
@@ -34,34 +35,46 @@
 
 %token        END      0 "end of file"
 %token        ASSIGN     ":="
+%token        PRINT      "print"
 
 %token <ival> NUMBER     "number"
+%token <sval> ID        "identifier"
 %type  <exptr> exp
+%type  <exptr> stmt 
+%type  <exptr> sequence
+
+
 
 
 %printer {debug_stream() << $$;} <ival>
 
+%right ASSIGN;
 %left '+' '-';
 %left '*' '/';
 %right UMINUS;
 
-%start to_eval;
+%start program;
 
 %%
 
-
-to_eval: exp END { drv.result = move($1);};
-     
-     
+program: sequence END {drv.result = $1;}
 
 
-exp: exp '+' exp   { $$ = new ExpTree(ADD, {move($1), move($3)}); }
+sequence: {$$ = new ExpTree(SEQ);} 
+| sequence stmt {$$ = $1; $1->add(move($2));}
+
+stmt: exp ';' {$$ = new ExpTree(EXP, {move($1)});}
+    | PRINT exp ';' {$$ = new ExpTree(PRINT, {move($2)});}
+
+exp: ID ASSIGN exp {$$ = new ExpTree(SET, {new ExpTree(ID, $1), move($3)}); delete $1;}
+    | exp '+' exp   { $$ = new ExpTree(ADD, {move($1), move($3)}); }
     | exp '-' exp   { $$ = new ExpTree(SUB, {move($1), move($3)}); }
     | exp '*' exp   { $$ = new ExpTree(MUL, {move($1), move($3)}); }
     | exp '/' exp   { $$ = new ExpTree(DIV, {move($1), move($3)}); }
     | '-' exp %prec UMINUS { $$ = new ExpTree(NEG, {move($2)}); }
     | '(' exp ')'   { $$ = $2; }
     | "number"      { $$ = new ExpTree(INT, $1);}
+    | "identifier" { $$ = new ExpTree(ID, $1); delete $1;}
 
 %%
 

@@ -14,7 +14,7 @@ using namespace std;
      // ... and declare it for the parser's sake.
      YY_DECL;
 
-class driver
+class driver // The driver of the parser/lexer - this is inspired by the c++ Bison demo
     {
      public:
        driver ();

@@ -13,8 +13,9 @@ class VM {
         Program prog;
         int ip;
         vector<Value> stk;
+        vector<Value> globals;
         bool run(); // 0: success, 1: error
-        Value get();
+        Value pop();
         Value peek(int i);
         void const_op();
 };

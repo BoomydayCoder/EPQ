@@ -6,20 +6,24 @@
 #include <memory>
 using namespace std;
 
-enum node_type {
-    ADD, SUB, MUL, DIV, NEG, INT
+enum node_type { // Types of AST nodes
+    ADD, SUB, MUL, DIV, NEG, INT, SEQ, ID, SET, EXP, PRINT,
 };
 
-class ExpTree {
+class ExpTree { // A class that stores the AST
     public:
         node_type type;
-        int value;
+        int num;
+        string id;
         vector<ExpTree*> ch;
         ExpTree(node_type t, int v);
+        ExpTree(node_type t, string* i);
         ExpTree(node_type t, vector<ExpTree*> c);
+        ExpTree(node_type t);
         ExpTree();
         ~ExpTree();
         void print_self();
+        void add(ExpTree* c); // Add a child to the node
 };
 
 

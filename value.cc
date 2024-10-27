@@ -4,18 +4,18 @@ using namespace std;
 
 Value::Value(int v){
     type = V_INT;
-    val.v_int = v;
+    get<int>(val) = v;
 }
 
 Value::Value(){
     type = V_INT;
-    val.v_int = 0;
+    get<int>(val) = 0;
 }
 
 void Value::print_self(){
     switch (type){
         case V_INT:
-            cerr << val.v_int;
+            cerr << get<int>(val);
             break;
     }
 }

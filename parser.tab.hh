@@ -138,13 +138,14 @@ namespace yy {
 #line 25 "parser.yy"
 
     int ival;
+    string *sval;
     ExpTree *exptr;
     
 
 
 
 /* Line 35 of lalr1.cc  */
-#line 148 "parser.tab.hh"
+#line 149 "parser.tab.hh"
     };
 #else
     typedef YYSTYPE semantic_type;
@@ -158,8 +159,10 @@ namespace yy {
    enum yytokentype {
      END = 0,
      ASSIGN = 258,
-     NUMBER = 259,
-     UMINUS = 260
+     PRINT = 259,
+     NUMBER = 260,
+     ID = 261,
+     UMINUS = 262
    };
 
     };
@@ -336,7 +339,7 @@ namespace yy {
 } // yy
 
 /* Line 35 of lalr1.cc  */
-#line 340 "parser.tab.hh"
+#line 343 "parser.tab.hh"
 
 
 

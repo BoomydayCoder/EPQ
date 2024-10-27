@@ -21,7 +21,7 @@ not of token_type.  */
 
 %option noyywrap nounput batch debug
 
-id    [a-zA-Z][a-zA-Z_0-9]* // one letter, then alphanumeric characters
+id    [a-zA-Z][a-zA-Z_0-9]*
 int   [0-9]+
 blank [ \t]
 
@@ -40,15 +40,17 @@ blank [ \t]
 typedef yy::parser::token token;
 %}
         /* Convert ints to the actual type of tokens.  */
-[-+*/()]     return yy::parser::token_type (yytext[0]);
+[-+*/();]     return yy::parser::token_type (yytext[0]);
 ":="       return token::ASSIGN;
+"print"   return token::PRINT;
 {int}      {
-    errno = 0;
     long n = strtol (yytext, NULL, 10);
-    if (! (INT_MIN <= n && n <= INT_MAX && errno != ERANGE))
-        driver.error (*yylloc, "integer is out of range");
     yylval->ival = n;
     return token::NUMBER;
+}
+{id}       {
+    yylval->sval = new std::string (yytext);
+    return token::ID;
 }
 .          driver.error (*yylloc, "invalid character");
 %%

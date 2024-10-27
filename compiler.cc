@@ -27,7 +27,40 @@ void Compiler::compile(ExpTree* exp){
             prog.push_byte(OP_NEG);
             break;
         case INT:
-            prog.push_const(Value(exp->value));
+            prog.push_const(Value(exp->num));
+            break;
+        case SEQ:
+            for(auto c: exp->ch){
+                compile(c);
+            }
+            break;
+        case EXP:
+            compile(exp->ch[0]);
+            prog.push_byte(OP_POP);
+            break;
+        case SET:
+            compile(exp->ch[1]);
+            if (global_index.find(exp->ch[0]->id) == global_index.end()){
+                global_index[exp->ch[0]->id] = global_index.size();
+            }
+            if (global_index[exp->ch[0]->id] > UINT8_MAX){
+                cerr << "Too many global variables" << endl;
+                exit(1);
+            }
+            prog.push_byte(OP_SET_GLOBAL);
+            prog.push_byte(global_index[exp->ch[0]->id]);
+            break;
+        case ID:
+            if (global_index.find(exp->id) == global_index.end()){
+                cerr << "Global " << exp->id << " not found" << endl;
+                exit(1);
+            }
+            prog.push_byte(OP_GET_GLOBAL);
+            prog.push_byte(global_index[exp->id]);
+            break;
+        case PRINT:
+            compile(exp->ch[0]);
+            prog.push_byte(OP_PRINT);
             break;
     }
 }

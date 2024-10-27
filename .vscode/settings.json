@@ -1,3 +1,13 @@
 {
-    "makefile.makefilePath": "C:\\Users\\adavy\\CLionProjects\\EPQ\\makefile"
+    "makefile.makefilePath": "C:\\Users\\adavy\\CLionProjects\\EPQ\\makefile",
+    "files.associations": {
+        "istream": "cpp",
+        "memory": "cpp",
+        "tuple": "cpp",
+        "type_traits": "cpp",
+        "utility": "cpp",
+        "variant": "cpp",
+        "xlocnum": "cpp",
+        "xutility": "cpp"
+    }
 }
