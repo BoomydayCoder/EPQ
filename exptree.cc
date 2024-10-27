@@ -97,5 +97,13 @@ void ExpTree::print_self(){
             cerr << "print ";
             ch[0]->print_self();
             break;
+        case BLK:
+            cerr << "{" << endl;
+            ch[0]->print_self();
+            cerr << "}";
+            break;
+        case INP:
+            cerr << "input";
+            break;
     }
 }

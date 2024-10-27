@@ -26,10 +26,13 @@ int main (int argc, char *argv[])
     }
    
 
-    exp->print_self(); cerr << endl;
+    exp->print_self();
+
+    
 
     
     Compiler comp;
+    comp.resolve_globals(exp);
     comp.compile(exp);
     delete exp;
     

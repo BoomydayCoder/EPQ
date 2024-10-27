@@ -38,7 +38,8 @@
 %token        PRINT      "print"
 
 %token <ival> NUMBER     "number"
-%token <sval> ID        "identifier"
+%token <sval> ID         "identifier"
+%token        INPUT      "input"
 %type  <exptr> exp
 %type  <exptr> stmt 
 %type  <exptr> sequence
@@ -65,6 +66,7 @@ sequence: {$$ = new ExpTree(SEQ);}
 
 stmt: exp ';' {$$ = new ExpTree(EXP, {move($1)});}
     | PRINT exp ';' {$$ = new ExpTree(PRINT, {move($2)});}
+    | '{' sequence '}' {$$ = new ExpTree(BLK, {move($2)});}
 
 exp: ID ASSIGN exp {$$ = new ExpTree(SET, {new ExpTree(ID, $1), move($3)}); delete $1;}
     | exp '+' exp   { $$ = new ExpTree(ADD, {move($1), move($3)}); }
@@ -75,6 +77,7 @@ exp: ID ASSIGN exp {$$ = new ExpTree(SET, {new ExpTree(ID, $1), move($3)}); dele
     | '(' exp ')'   { $$ = $2; }
     | "number"      { $$ = new ExpTree(INT, $1);}
     | "identifier" { $$ = new ExpTree(ID, $1); delete $1;}
+    | INPUT {$$ = new ExpTree(INP);}
 
 %%
 

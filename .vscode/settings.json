@@ -8,6 +8,10 @@
         "utility": "cpp",
         "variant": "cpp",
         "xlocnum": "cpp",
-        "xutility": "cpp"
+        "xutility": "cpp",
+        "bit": "cpp",
+        "exception": "cpp",
+        "limits": "cpp",
+        "iostream": "cpp"
     }
 }

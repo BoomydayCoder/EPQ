@@ -47,12 +47,23 @@ void Program::print_self(){
             case OP_PRINT:
                 cerr << "OP_PRINT" << endl;
                 break;
+            case OP_INPUT:
+                cerr << "OP_INPUT" << endl;
+                break;
             case OP_SET_GLOBAL:
                 cerr << "OP_SET_GLOBAL " << (int)code[++i] << endl;
                 break;
             case OP_GET_GLOBAL:
                 cerr << "OP_GET_GLOBAL " << (int)code[++i] << endl;
                 break;
+            case OP_SET_LOCAL:
+                cerr << "OP_SET_LOCAL " << (int)code[++i] << endl;
+                break;
+            case OP_GET_LOCAL:
+                cerr << "OP_GET_LOCAL " << (int)code[++i] << endl;
+                break;
+            
+            
         }
     }
 }

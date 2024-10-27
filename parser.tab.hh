@@ -162,7 +162,8 @@ namespace yy {
      PRINT = 259,
      NUMBER = 260,
      ID = 261,
-     UMINUS = 262
+     INPUT = 262,
+     UMINUS = 263
    };
 
     };
@@ -339,7 +340,7 @@ namespace yy {
 } // yy
 
 /* Line 35 of lalr1.cc  */
-#line 343 "parser.tab.hh"
+#line 344 "parser.tab.hh"
 
 
 

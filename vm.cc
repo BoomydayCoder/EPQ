@@ -66,6 +66,11 @@ bool VM::run(){
                 pop().print_self(); 
                 cerr << endl;
                 break;
+            case OP_INPUT:
+                int v;
+                cin >> v;
+                stk.push_back(Value(v));
+                break;
             case OP_POP:
                 stk.pop_back();
                 break;
@@ -73,12 +78,23 @@ bool VM::run(){
                 globals[prog.code[ip++]] = peek(0);
                 break;
             case OP_GET_GLOBAL:
+                if (globals.find(prog.code[ip]) == globals.end()){
+                    cerr << "Undefined global" << endl;
+                    return 1;
+                } // maybe remove this to speed up language, need to do profiling
                 stk.push_back(globals[prog.code[ip++]]);
+                break;
+            case OP_SET_LOCAL:
+                stk[prog.code[ip++]] = pop();
+                break;
+            case OP_GET_LOCAL:
+                stk.push_back(stk[prog.code[ip++]]);
                 break;
             default:
                 cerr << "Unknown opcode " << prog.code[ip-1] << endl;
                 return 1;
         }
     }
+    
     return 0;
 }

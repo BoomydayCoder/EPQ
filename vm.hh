@@ -5,7 +5,9 @@
 #include "value.hh"
 #include <vector>
 #include <iostream>
+#include <unordered_map>
 using namespace std;
+
 
 class VM {
     public:
@@ -13,11 +15,13 @@ class VM {
         Program prog;
         int ip;
         vector<Value> stk;
-        vector<Value> globals;
+        unordered_map<int, Value> globals; // this is an unordered map to prevent redeclarations
         bool run(); // 0: success, 1: error
         Value pop(); // Pops the value off the stack 
-        Value peek(int i);
+        Value peek(int i); // Looks at the ith top value of the stack
         void const_op();
 };
+
+extern VM vm;
 
 #endif

@@ -199,7 +199,7 @@ namespace yy {
         case 5: /* "\"number\"" */
 
 /* Line 449 of lalr1.cc  */
-#line 49 "parser.yy"
+#line 50 "parser.yy"
 	{debug_stream() << (yyvaluep->ival);};
 
 /* Line 449 of lalr1.cc  */
@@ -437,35 +437,35 @@ namespace yy {
 	  case 2:
 
 /* Line 678 of lalr1.cc  */
-#line 60 "parser.yy"
+#line 61 "parser.yy"
     {drv.result = (yysemantic_stack_[(2) - (1)].exptr);}
     break;
 
   case 3:
 
 /* Line 678 of lalr1.cc  */
-#line 63 "parser.yy"
+#line 64 "parser.yy"
     {(yyval.exptr) = new ExpTree(SEQ);}
     break;
 
   case 4:
 
 /* Line 678 of lalr1.cc  */
-#line 64 "parser.yy"
+#line 65 "parser.yy"
     {(yyval.exptr) = (yysemantic_stack_[(2) - (1)].exptr); (yysemantic_stack_[(2) - (1)].exptr)->add(move((yysemantic_stack_[(2) - (2)].exptr)));}
     break;
 
   case 5:
 
 /* Line 678 of lalr1.cc  */
-#line 66 "parser.yy"
+#line 67 "parser.yy"
     {(yyval.exptr) = new ExpTree(EXP, {move((yysemantic_stack_[(2) - (1)].exptr))});}
     break;
 
   case 6:
 
 /* Line 678 of lalr1.cc  */
-#line 67 "parser.yy"
+#line 68 "parser.yy"
     {(yyval.exptr) = new ExpTree(PRINT, {move((yysemantic_stack_[(3) - (2)].exptr))});}
     break;
 
@@ -473,69 +473,83 @@ namespace yy {
 
 /* Line 678 of lalr1.cc  */
 #line 69 "parser.yy"
-    {(yyval.exptr) = new ExpTree(SET, {new ExpTree(ID, (yysemantic_stack_[(3) - (1)].sval)), move((yysemantic_stack_[(3) - (3)].exptr))}); delete (yysemantic_stack_[(3) - (1)].sval);}
+    {(yyval.exptr) = new ExpTree(BLK, {move((yysemantic_stack_[(3) - (2)].exptr))});}
     break;
 
   case 8:
 
 /* Line 678 of lalr1.cc  */
-#line 70 "parser.yy"
-    { (yyval.exptr) = new ExpTree(ADD, {move((yysemantic_stack_[(3) - (1)].exptr)), move((yysemantic_stack_[(3) - (3)].exptr))}); }
+#line 71 "parser.yy"
+    {(yyval.exptr) = new ExpTree(SET, {new ExpTree(ID, (yysemantic_stack_[(3) - (1)].sval)), move((yysemantic_stack_[(3) - (3)].exptr))}); delete (yysemantic_stack_[(3) - (1)].sval);}
     break;
 
   case 9:
 
 /* Line 678 of lalr1.cc  */
-#line 71 "parser.yy"
-    { (yyval.exptr) = new ExpTree(SUB, {move((yysemantic_stack_[(3) - (1)].exptr)), move((yysemantic_stack_[(3) - (3)].exptr))}); }
+#line 72 "parser.yy"
+    { (yyval.exptr) = new ExpTree(ADD, {move((yysemantic_stack_[(3) - (1)].exptr)), move((yysemantic_stack_[(3) - (3)].exptr))}); }
     break;
 
   case 10:
 
 /* Line 678 of lalr1.cc  */
-#line 72 "parser.yy"
-    { (yyval.exptr) = new ExpTree(MUL, {move((yysemantic_stack_[(3) - (1)].exptr)), move((yysemantic_stack_[(3) - (3)].exptr))}); }
+#line 73 "parser.yy"
+    { (yyval.exptr) = new ExpTree(SUB, {move((yysemantic_stack_[(3) - (1)].exptr)), move((yysemantic_stack_[(3) - (3)].exptr))}); }
     break;
 
   case 11:
 
 /* Line 678 of lalr1.cc  */
-#line 73 "parser.yy"
-    { (yyval.exptr) = new ExpTree(DIV, {move((yysemantic_stack_[(3) - (1)].exptr)), move((yysemantic_stack_[(3) - (3)].exptr))}); }
+#line 74 "parser.yy"
+    { (yyval.exptr) = new ExpTree(MUL, {move((yysemantic_stack_[(3) - (1)].exptr)), move((yysemantic_stack_[(3) - (3)].exptr))}); }
     break;
 
   case 12:
 
 /* Line 678 of lalr1.cc  */
-#line 74 "parser.yy"
-    { (yyval.exptr) = new ExpTree(NEG, {move((yysemantic_stack_[(2) - (2)].exptr))}); }
+#line 75 "parser.yy"
+    { (yyval.exptr) = new ExpTree(DIV, {move((yysemantic_stack_[(3) - (1)].exptr)), move((yysemantic_stack_[(3) - (3)].exptr))}); }
     break;
 
   case 13:
 
 /* Line 678 of lalr1.cc  */
-#line 75 "parser.yy"
-    { (yyval.exptr) = (yysemantic_stack_[(3) - (2)].exptr); }
+#line 76 "parser.yy"
+    { (yyval.exptr) = new ExpTree(NEG, {move((yysemantic_stack_[(2) - (2)].exptr))}); }
     break;
 
   case 14:
 
 /* Line 678 of lalr1.cc  */
-#line 76 "parser.yy"
-    { (yyval.exptr) = new ExpTree(INT, (yysemantic_stack_[(1) - (1)].ival));}
+#line 77 "parser.yy"
+    { (yyval.exptr) = (yysemantic_stack_[(3) - (2)].exptr); }
     break;
 
   case 15:
 
 /* Line 678 of lalr1.cc  */
-#line 77 "parser.yy"
+#line 78 "parser.yy"
+    { (yyval.exptr) = new ExpTree(INT, (yysemantic_stack_[(1) - (1)].ival));}
+    break;
+
+  case 16:
+
+/* Line 678 of lalr1.cc  */
+#line 79 "parser.yy"
     { (yyval.exptr) = new ExpTree(ID, (yysemantic_stack_[(1) - (1)].sval)); delete (yysemantic_stack_[(1) - (1)].sval);}
+    break;
+
+  case 17:
+
+/* Line 678 of lalr1.cc  */
+#line 80 "parser.yy"
+    {(yyval.exptr) = new ExpTree(INP);}
     break;
 
 
 
 /* Line 678 of lalr1.cc  */
-#line 539 "parser.tab.cc"
+#line 553 "parser.tab.cc"
 	default:
           break;
       }
@@ -740,13 +754,14 @@ namespace yy {
 
   /* YYPACT[STATE-NUM] -- Index in YYTABLE of the portion describing
      STATE-NUM.  */
-  const signed char parser::yypact_ninf_ = -9;
+  const signed char parser::yypact_ninf_ = -6;
   const signed char
   parser::yypact_[] =
   {
-        -9,     5,    15,    -9,    -9,    19,    -9,     3,    19,    19,
-      -9,    34,    40,    19,    -9,    26,    19,    19,    19,    19,
-      -9,    -9,    46,    -9,    -8,    -8,    -9,    -9
+        -6,     9,    18,    -6,    -6,    -4,    -6,     8,    -6,    -4,
+      -6,    -4,    -6,    38,    44,    -4,    -6,    24,    33,    -4,
+      -4,    -4,    -4,    -6,    -6,    50,    -6,    -6,    -3,    -3,
+      -6,    -6
   };
 
   /* YYDEFACT[S] -- default rule to reduce with in state S when YYTABLE
@@ -755,23 +770,24 @@ namespace yy {
   const unsigned char
   parser::yydefact_[] =
   {
-         3,     0,     0,     1,     2,     0,    14,    15,     0,     0,
-       4,     0,     0,     0,    12,     0,     0,     0,     0,     0,
-       5,     6,     7,    13,     8,     9,    10,    11
+         3,     0,     0,     1,     2,     0,    15,    16,    17,     0,
+       3,     0,     4,     0,     0,     0,    13,     0,     0,     0,
+       0,     0,     0,     5,     6,     8,     7,    14,     9,    10,
+      11,    12
   };
 
   /* YYPGOTO[NTERM-NUM].  */
   const signed char
   parser::yypgoto_[] =
   {
-        -9,    -9,    -9,    -9,    -5
+        -6,    -6,     3,    -6,    -5
   };
 
   /* YYDEFGOTO[NTERM-NUM].  */
   const signed char
   parser::yydefgoto_[] =
   {
-        -1,     1,     2,    10,    11
+        -1,     1,     2,    12,    13
   };
 
   /* YYTABLE[YYPACT[STATE-NUM]].  What to do in state STATE-NUM.  If
@@ -781,24 +797,26 @@ namespace yy {
   const unsigned char
   parser::yytable_[] =
   {
-        12,    18,    19,    14,    15,     3,    13,     0,    22,     0,
-       0,    24,    25,    26,    27,     4,     0,     0,     0,     5,
-       6,     7,     0,     8,     6,     7,     0,     8,     9,     0,
-       0,     0,     9,    16,    17,    18,    19,     0,     0,     0,
-      23,    16,    17,    18,    19,     0,    20,    16,    17,    18,
-      19,     0,    21,    16,    17,    18,    19
+        14,     6,     7,     8,    16,     9,    18,    21,    22,     3,
+      25,    15,    11,    17,    28,    29,    30,    31,     4,     0,
+       0,     0,     5,     6,     7,     8,     0,     9,     5,     6,
+       7,     8,    10,     9,    11,     0,     0,     0,    10,    26,
+      11,    19,    20,    21,    22,     0,    19,    20,    21,    22,
+      27,    23,    19,    20,    21,    22,     0,    24,    19,    20,
+      21,    22
   };
 
   /* YYCHECK.  */
   const signed char
   parser::yycheck_[] =
   {
-         5,     9,    10,     8,     9,     0,     3,    -1,    13,    -1,
-      -1,    16,    17,    18,    19,     0,    -1,    -1,    -1,     4,
-       5,     6,    -1,     8,     5,     6,    -1,     8,    13,    -1,
-      -1,    -1,    13,     7,     8,     9,    10,    -1,    -1,    -1,
-      14,     7,     8,     9,    10,    -1,    12,     7,     8,     9,
-      10,    -1,    12,     7,     8,     9,    10
+         5,     5,     6,     7,     9,     9,    11,    10,    11,     0,
+      15,     3,    16,    10,    19,    20,    21,    22,     0,    -1,
+      -1,    -1,     4,     5,     6,     7,    -1,     9,     4,     5,
+       6,     7,    14,     9,    16,    -1,    -1,    -1,    14,    15,
+      16,     8,     9,    10,    11,    -1,     8,     9,    10,    11,
+      17,    13,     8,     9,    10,    11,    -1,    13,     8,     9,
+      10,    11
   };
 
   /* STOS_[STATE-NUM] -- The (internal number of the) accessing
@@ -806,9 +824,10 @@ namespace yy {
   const unsigned char
   parser::yystos_[] =
   {
-         0,    16,    17,     0,     0,     4,     5,     6,     8,    13,
-      18,    19,    19,     3,    19,    19,     7,     8,     9,    10,
-      12,    12,    19,    14,    19,    19,    19,    19
+         0,    19,    20,     0,     0,     4,     5,     6,     7,     9,
+      14,    16,    21,    22,    22,     3,    22,    20,    22,     8,
+       9,    10,    11,    13,    13,    22,    15,    17,    22,    22,
+      22,    22
   };
 
 #if YYDEBUG
@@ -817,8 +836,8 @@ namespace yy {
   const unsigned short int
   parser::yytoken_number_[] =
   {
-         0,   256,   257,   258,   259,   260,   261,    43,    45,    42,
-      47,   262,    59,    40,    41
+         0,   256,   257,   258,   259,   260,   261,   262,    43,    45,
+      42,    47,   263,    59,   123,   125,    40,    41
   };
 #endif
 
@@ -826,8 +845,8 @@ namespace yy {
   const unsigned char
   parser::yyr1_[] =
   {
-         0,    15,    16,    17,    17,    18,    18,    19,    19,    19,
-      19,    19,    19,    19,    19,    19
+         0,    18,    19,    20,    20,    21,    21,    21,    22,    22,
+      22,    22,    22,    22,    22,    22,    22,    22
   };
 
   /* YYR2[YYN] -- Number of symbols composing right hand side of rule YYN.  */
@@ -835,7 +854,7 @@ namespace yy {
   parser::yyr2_[] =
   {
          0,     2,     2,     0,     2,     2,     3,     3,     3,     3,
-       3,     3,     2,     3,     1,     1
+       3,     3,     3,     2,     3,     1,     1,     1
   };
 
 #if YYDEBUG || YYERROR_VERBOSE || YYTOKEN_TABLE
@@ -845,8 +864,9 @@ namespace yy {
   const parser::yytname_[] =
   {
     "\"end of file\"", "error", "$undefined", "\":=\"", "\"print\"",
-  "\"number\"", "\"identifier\"", "'+'", "'-'", "'*'", "'/'", "UMINUS",
-  "';'", "'('", "')'", "$accept", "program", "sequence", "stmt", "exp", 0
+  "\"number\"", "\"identifier\"", "\"input\"", "'+'", "'-'", "'*'", "'/'",
+  "UMINUS", "';'", "'{'", "'}'", "'('", "')'", "$accept", "program",
+  "sequence", "stmt", "exp", 0
   };
 #endif
 
@@ -855,11 +875,12 @@ namespace yy {
   const parser::rhs_number_type
   parser::yyrhs_[] =
   {
-        16,     0,    -1,    17,     0,    -1,    -1,    17,    18,    -1,
-      19,    12,    -1,     4,    19,    12,    -1,     6,     3,    19,
-      -1,    19,     7,    19,    -1,    19,     8,    19,    -1,    19,
-       9,    19,    -1,    19,    10,    19,    -1,     8,    19,    -1,
-      13,    19,    14,    -1,     5,    -1,     6,    -1
+        19,     0,    -1,    20,     0,    -1,    -1,    20,    21,    -1,
+      22,    13,    -1,     4,    22,    13,    -1,    14,    20,    15,
+      -1,     6,     3,    22,    -1,    22,     8,    22,    -1,    22,
+       9,    22,    -1,    22,    10,    22,    -1,    22,    11,    22,
+      -1,     9,    22,    -1,    16,    22,    17,    -1,     5,    -1,
+       6,    -1,     7,    -1
   };
 
   /* YYPRHS[YYN] -- Index of the first RHS symbol of rule number YYN in
@@ -868,15 +889,15 @@ namespace yy {
   parser::yyprhs_[] =
   {
          0,     0,     3,     6,     7,    10,    13,    17,    21,    25,
-      29,    33,    37,    40,    44,    46
+      29,    33,    37,    41,    44,    48,    50,    52
   };
 
   /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
   const unsigned char
   parser::yyrline_[] =
   {
-         0,    60,    60,    63,    64,    66,    67,    69,    70,    71,
-      72,    73,    74,    75,    76,    77
+         0,    61,    61,    64,    65,    67,    68,    69,    71,    72,
+      73,    74,    75,    76,    77,    78,    79,    80
   };
 
   // Print the state stack on the debug stream.
@@ -920,15 +941,15 @@ namespace yy {
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
-      13,    14,     9,     7,     2,     8,     2,    10,     2,     2,
-       2,     2,     2,     2,     2,     2,     2,     2,     2,    12,
+      16,    17,    10,     8,     2,     9,     2,    11,     2,     2,
+       2,     2,     2,     2,     2,     2,     2,     2,     2,    13,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
-       2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
+       2,     2,     2,    14,     2,    15,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
@@ -942,7 +963,7 @@ namespace yy {
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     1,     2,     3,     4,
-       5,     6,    11
+       5,     6,     7,    12
     };
     if ((unsigned int) t <= yyuser_token_number_max_)
       return translate_table[t];
@@ -951,15 +972,15 @@ namespace yy {
   }
 
   const int parser::yyeof_ = 0;
-  const int parser::yylast_ = 56;
+  const int parser::yylast_ = 61;
   const int parser::yynnts_ = 5;
   const int parser::yyempty_ = -2;
   const int parser::yyfinal_ = 3;
   const int parser::yyterror_ = 1;
   const int parser::yyerrcode_ = 256;
-  const int parser::yyntokens_ = 15;
+  const int parser::yyntokens_ = 18;
 
-  const unsigned int parser::yyuser_token_number_max_ = 262;
+  const unsigned int parser::yyuser_token_number_max_ = 263;
   const parser::token_number_type parser::yyundef_token_ = 2;
 
 
@@ -969,11 +990,11 @@ namespace yy {
 } // yy
 
 /* Line 1054 of lalr1.cc  */
-#line 973 "parser.tab.cc"
+#line 994 "parser.tab.cc"
 
 
 /* Line 1056 of lalr1.cc  */
-#line 79 "parser.yy"
+#line 82 "parser.yy"
 
 
 void yy::parser::error (const yy::parser::location_type& l, const string& m)
