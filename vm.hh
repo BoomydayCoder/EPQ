@@ -15,7 +15,7 @@ class VM {
         vector<Value> stk;
         vector<Value> globals;
         bool run(); // 0: success, 1: error
-        Value pop();
+        Value pop(); // Pops the value off the stack 
         Value peek(int i);
         void const_op();
 };

@@ -1,7 +1,7 @@
 #include "compiler.hh"
 
 void Compiler::compile(ExpTree* exp){
-    switch(exp->type){
+    switch(exp->type){ // Loop over types of tree node
         case ADD:
             compile(exp->ch[0]);
             compile(exp->ch[1]);
