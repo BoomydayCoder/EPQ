@@ -32,9 +32,24 @@ Value VM::peek(int i){
     return stk[stk.size()-i-1];
 }
 
+void VM::print_self(){
+    cerr << "ip: " << ip << endl;
+    cerr << "stack: ";
+    for(auto v: stk){
+        v.print_self();
+        cerr << " ";
+    }
+    cerr << endl;
+}
+
+uint16_t VM::read_short(){
+    return prog.code[ip++]*(1<<8) + prog.code[ip++];
+}
+
 
 bool VM::run(){
     for(ip=0;ip<prog.code.size();){
+        print_self();
         switch(prog.code[ip++]){
             case OP_ADD: 
                 BINARY_OP(+);
@@ -59,14 +74,32 @@ bool VM::run(){
                 }
                 stk.push_back(Value(-get<int>(pop().val)));
                 break;
+            case OP_EQ:
+                if (pop() == pop()){
+                    stk.push_back(Value(1));
+                }
+                else{
+                    stk.push_back(Value(0));
+                }
+                break;
+            case OP_NOT:
+                if (pop()){
+                    stk.push_back(Value(0));
+                }
+                else{
+                    stk.push_back(Value(1));
+                }
+                break;
             case OP_CONST:
                 stk.push_back(prog.consts[prog.code[ip++]]);
                 break;
             case OP_PRINT:
+                cerr << ">> ";
                 pop().print_self(); 
                 cerr << endl;
                 break;
             case OP_INPUT:
+                cerr << "<< " << flush;
                 int v;
                 cin >> v;
                 stk.push_back(Value(v));
@@ -85,10 +118,22 @@ bool VM::run(){
                 stk.push_back(globals[prog.code[ip++]]);
                 break;
             case OP_SET_LOCAL:
-                stk[prog.code[ip++]] = pop();
+                stk[prog.code[ip++]] = peek(0);
                 break;
             case OP_GET_LOCAL:
                 stk.push_back(stk[prog.code[ip++]]);
+                break;
+            case OP_DEF_LOCAL:
+                stk.push_back(peek(0));
+                break;
+            case OP_JMP_F:
+                pop() ? read_short() : ip += read_short(); // ip += (bool(pop())-1)*read_short();  - will benchmark later
+                break;
+            case OP_JMP:
+                ip += read_short(); 
+                break;
+            case OP_LOOP:
+                ip += read_short(); 
                 break;
             default:
                 cerr << "Unknown opcode " << prog.code[ip-1] << endl;

@@ -21,7 +21,7 @@ class driver // The driver of the parser/lexer - this is inspired by the c++ Bis
        virtual ~driver ();
      
      
-       ExpTree* result;
+       Ast* result;
 
        void scan_begin ();
        void scan_end ();

@@ -18,8 +18,20 @@ int Program::add_const(Value v){
     return consts.size() - 1;
 }
 
+void Program::patch_short(int jmp_start, int s){
+    s -= 3;
+    if (s > UINT16_MAX){
+        cerr << "Jump too far" << endl;
+        exit(1);
+    }
+    code[jmp_start+1] = s >> 8;
+    code[jmp_start+2] = s & 0xFF;
+}
+
 void Program::print_self(){
     for(int i=0; i<code.size();++i){
+        // add the same spacing for each line
+        cerr << i << ":\t";
         switch(code[i]){
             case OP_ADD:
                 cerr << "OP_ADD" << endl;
@@ -35,6 +47,12 @@ void Program::print_self(){
                 break;
             case OP_NEG:
                 cerr << "OP_NEG" << endl;
+                break;
+            case OP_EQ:
+                cerr << "OP_EQ" << endl;
+                break;
+            case OP_NOT:
+                cerr << "OP_NOT" << endl;
                 break;
             case OP_POP:
                 cerr << "OP_POP" << endl;
@@ -62,8 +80,18 @@ void Program::print_self(){
             case OP_GET_LOCAL:
                 cerr << "OP_GET_LOCAL " << (int)code[++i] << endl;
                 break;
-            
-            
+            case OP_DEF_LOCAL:
+                cerr << "OP_DEF_LOCAL " << endl;
+                break;
+            case OP_JMP_F:
+                cerr << "OP_JMP_F " << (int)code[++i]*(1<<8) + (int)code[++i] + 3 << endl;
+                break;
+            case OP_JMP:
+                cerr << "OP_JMP " << (int)code[++i]*(1<<8) + (int)code[++i] + 3 << endl;
+                break;
+            case OP_LOOP:
+                cerr << "OP_LOOP " << (int)code[++i]*(1<<8) + (int)code[++i] << endl; // needs to be changed later
+                break;
         }
     }
 }

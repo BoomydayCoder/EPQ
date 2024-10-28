@@ -11,8 +11,10 @@ class Compiler { // A class that represents the compiler as it compiles the code
     public:
         
         Program prog;
-        void resolve_globals(ExpTree* exp);
-        void compile(ExpTree* exp);
+        void resolve_globals(Ast* exp);
+        void compile(Ast* exp);
+        void begin_scope();
+        void end_scope();
         unordered_map<string, int> global_index;
 
         unordered_map<string, int> local_index;

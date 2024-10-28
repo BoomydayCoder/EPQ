@@ -20,6 +20,8 @@ class VM {
         Value pop(); // Pops the value off the stack 
         Value peek(int i); // Looks at the ith top value of the stack
         void const_op();
+        uint16_t read_short();
+        void print_self();
 };
 
 extern VM vm;

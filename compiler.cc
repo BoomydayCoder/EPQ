@@ -1,9 +1,10 @@
 #include "compiler.hh"
 #include "vm.hh"
 
-void Compiler::resolve_globals(ExpTree* exp){
+void Compiler::resolve_globals(Ast* exp){
     switch(exp->type){
         case BLK:
+        case IF:
             break;
         case SET:
             if(global_index.find(exp->ch[0]->id) == global_index.end()){
@@ -21,7 +22,23 @@ void Compiler::resolve_globals(ExpTree* exp){
     }
 }
 
-void Compiler::compile(ExpTree* exp){
+void Compiler::begin_scope(){
+    scope++;
+    local_counts.push_back(local_counts.back());
+}
+
+void Compiler::end_scope(){
+    int to_remove = local_counts.back() - local_counts[local_counts.size()-2];
+        for (int i=0; i<to_remove; ++i){
+            prog.push_byte(OP_POP);
+            local_index.erase(local_names.back());
+            local_names.pop_back();
+        }
+    local_counts.pop_back();
+    scope--;
+}
+
+void Compiler::compile(Ast* exp){
     switch(exp->type){ // Loop over types of tree node
         case ADD:
             compile(exp->ch[0]);
@@ -47,6 +64,15 @@ void Compiler::compile(ExpTree* exp){
             compile(exp->ch[0]);
             prog.push_byte(OP_NEG);
             break;
+        case EQ:
+            compile(exp->ch[0]);
+            compile(exp->ch[1]);
+            prog.push_byte(OP_EQ);
+            break;
+        case NOT:
+            compile(exp->ch[0]);
+            prog.push_byte(OP_NOT);
+            break;
         case INT:
             prog.push_const(Value(exp->num));
             break;
@@ -70,9 +96,13 @@ void Compiler::compile(ExpTree* exp){
             if (local_index.find(exp->ch[0]->id) == local_index.end()){
                 local_index[exp->ch[0]->id] = local_counts.back()++;
                 local_names.push_back(exp->ch[0]->id);
+                prog.push_byte(OP_DEF_LOCAL);
             } 
-            prog.push_byte(OP_SET_LOCAL);
-            prog.push_byte(local_index[exp->ch[0]->id]);
+            else{
+                prog.push_byte(OP_SET_LOCAL);
+                prog.push_byte(local_index[exp->ch[0]->id]);
+            }
+            
             
             break;
         case ID:
@@ -98,23 +128,40 @@ void Compiler::compile(ExpTree* exp){
         case INP:
             prog.push_byte(OP_INPUT);
             break;
-        case BLK:
+        case BLK: {
 
-            scope++;
-            local_counts.push_back(local_counts.back());
+                begin_scope();
 
-            for(auto c: exp->ch){
-                compile(c);
+                for(auto c: exp->ch){
+                    compile(c);
+                }
+                // free all the variables in the block
+                int to_remove = local_counts.back() - local_counts[local_counts.size()-2];
+                for (int i=0; i<to_remove; ++i){
+                    prog.push_byte(OP_POP);
+                    local_index.erase(local_names.back());
+                    local_names.pop_back();
+                }
+                end_scope();
+                break;
             }
-            // free all the variables in the block
-            int to_remove = local_counts.back() - local_counts[local_counts.size()-2];
-            for (int i=0; i<to_remove; ++i){
-                prog.push_byte(OP_POP);
-                local_index.erase(local_names.back());
-                local_names.pop_back();
-            }
-            local_counts.pop_back();
-            scope--;
+        case IF: {
+            begin_scope();
+            compile(exp->ch[0]);
+            int j_else = prog.code.size();
+            prog.push_byte(OP_JMP_F);
+            prog.push_byte(OP_NULL);
+            prog.push_byte(OP_NULL);
+            compile(exp->ch[1]);
+            int j_end = prog.code.size();
+            prog.push_byte(OP_JMP);
+            prog.push_byte(OP_NULL);
+            prog.push_byte(OP_NULL);
+            prog.patch_short(j_else, prog.code.size() - j_else);
+            compile(exp->ch[2]);
+            prog.patch_short(j_end, prog.code.size() - j_end);
+            end_scope();
             break;
+        }
     }
 }

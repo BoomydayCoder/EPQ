@@ -8,7 +8,7 @@
 int main (int argc, char *argv[])
 {
     driver drv;
-    ExpTree* exp;
+    Ast* exp;
     for (++argv; argv[0]; ++argv){
         if (*argv == std::string ("-p"))
         drv.trace_parsing = true;
@@ -27,6 +27,8 @@ int main (int argc, char *argv[])
    
 
     exp->print_self();
+
+    
 
     
 

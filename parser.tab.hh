@@ -139,7 +139,7 @@ namespace yy {
 
     int ival;
     string *sval;
-    ExpTree *exptr;
+    Ast *exptr;
     
 
 

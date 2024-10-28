@@ -16,6 +16,10 @@ class Value {
         variant<int> val;
         void print_self();
         bool is_int();
+        bool operator==(const Value& v) const;
+        explicit operator bool() const;
+
+
 };
 
 #endif

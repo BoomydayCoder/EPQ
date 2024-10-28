@@ -25,7 +25,7 @@
 %union {
     int ival;
     string *sval;
-    ExpTree *exptr;
+    Ast *exptr;
     
 };
 
@@ -33,23 +33,28 @@
     #include "driver.hh"
 }
 
-%token        END      0 "end of file"
-%token        ASSIGN     ":="
-%token        PRINT      "print"
+%token        END      0 
+%token        ASSIGN    
+%token        PRINT     
 
-%token <ival> NUMBER     "number"
-%token <sval> ID         "identifier"
-%token        INPUT      "input"
+%token <ival> NUMBER     
+%token <sval> ID         
+%token        INPUT      
 %type  <exptr> exp
 %type  <exptr> stmt 
 %type  <exptr> sequence
+%type <exptr> block
 
 
 
 
 %printer {debug_stream() << $$;} <ival>
 
+
 %right ASSIGN;
+%right '?' ':';
+%right '!';
+%left '=';
 %left '+' '-';
 %left '*' '/';
 %right UMINUS;
@@ -61,23 +66,32 @@
 program: sequence END {drv.result = $1;}
 
 
-sequence: {$$ = new ExpTree(SEQ);} 
+sequence: {$$ = new Ast(SEQ);} 
 | sequence stmt {$$ = $1; $1->add(move($2));}
 
-stmt: exp ';' {$$ = new ExpTree(EXP, {move($1)});}
-    | PRINT exp ';' {$$ = new ExpTree(PRINT, {move($2)});}
-    | '{' sequence '}' {$$ = new ExpTree(BLK, {move($2)});}
+block: '{' sequence '}' {$$ = new Ast(BLK, {move($2)});}
 
-exp: ID ASSIGN exp {$$ = new ExpTree(SET, {new ExpTree(ID, $1), move($3)}); delete $1;}
-    | exp '+' exp   { $$ = new ExpTree(ADD, {move($1), move($3)}); }
-    | exp '-' exp   { $$ = new ExpTree(SUB, {move($1), move($3)}); }
-    | exp '*' exp   { $$ = new ExpTree(MUL, {move($1), move($3)}); }
-    | exp '/' exp   { $$ = new ExpTree(DIV, {move($1), move($3)}); }
-    | '-' exp %prec UMINUS { $$ = new ExpTree(NEG, {move($2)}); }
+stmt: ';' {$$ = new Ast(SEQ);}
+    | exp ';' {$$ = new Ast(EXP, {move($1)});}
+    | PRINT exp ';' {$$ = new Ast(PRINT, {move($2)});}
+    | block {$$ = $1;}
+    | exp '?' stmt ':' stmt {$$ = new Ast(IF, {move($1), move($3), move($5)});}
+    | exp '?' stmt {$$ = new Ast(IF, {move($1), move($3), new Ast(SEQ)});}
+    
+    
+
+exp: ID ASSIGN exp {$$ = new Ast(SET, {new Ast(ID, $1), move($3)}); delete $1;}
+    | exp '+' exp   { $$ = new Ast(ADD, {move($1), move($3)}); }
+    | exp '-' exp   { $$ = new Ast(SUB, {move($1), move($3)}); }
+    | exp '*' exp   { $$ = new Ast(MUL, {move($1), move($3)}); }
+    | exp '/' exp   { $$ = new Ast(DIV, {move($1), move($3)}); }
+    | exp '=' exp   { $$ = new Ast(EQ, {move($1), move($3)}); }
+    | '!' exp       { $$ = new Ast(NOT, {move($2)}); }
+    | '-' exp %prec UMINUS { $$ = new Ast(NEG, {move($2)}); }
     | '(' exp ')'   { $$ = $2; }
-    | "number"      { $$ = new ExpTree(INT, $1);}
-    | "identifier" { $$ = new ExpTree(ID, $1); delete $1;}
-    | INPUT {$$ = new ExpTree(INP);}
+    | NUMBER      { $$ = new Ast(INT, $1);}
+    | ID { $$ = new Ast(ID, $1); delete $1;}
+    | INPUT {$$ = new Ast(INP);}
 
 %%
 

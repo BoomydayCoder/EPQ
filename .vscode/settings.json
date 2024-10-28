@@ -12,6 +12,8 @@
         "bit": "cpp",
         "exception": "cpp",
         "limits": "cpp",
-        "iostream": "cpp"
+        "iostream": "cpp",
+        "vector": "cpp",
+        "ostream": "cpp"
     }
 }

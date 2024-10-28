@@ -23,3 +23,22 @@ void Value::print_self(){
 bool Value::is_int(){
     return type == V_INT;
 }
+
+bool Value::operator==(const Value& v) const{
+    if (type != v.type){
+        return false;
+    }
+    switch(type){
+        case V_INT:
+            return get<int>(val) == get<int>(v.val);
+    }
+    return false;
+}
+
+Value::operator bool() const{
+    switch(type){
+        case V_INT:
+            return get<int>(val) != 0;
+    }
+    return false;
+}

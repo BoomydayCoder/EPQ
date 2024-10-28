@@ -4,46 +4,46 @@
 
 using namespace std;
 
-ExpTree::ExpTree(node_type t, int v){
+Ast::Ast(node_type t, int v){
     type = t;
     num = v;
     id = "";
 }
 
-ExpTree::ExpTree(node_type t, string* i){
+Ast::Ast(node_type t, string* i){
     type = t;
     id = *i;
     num = 0;
 }
 
-ExpTree::ExpTree(node_type t, vector<ExpTree*> c){
+Ast::Ast(node_type t, vector<Ast*> c){
     type = t;
     ch = move(c);
 }
 
-ExpTree::ExpTree(node_type t){
+Ast::Ast(node_type t){
     type = t;
     num = 0;
     id = "";
 }
 
-ExpTree::ExpTree(){
+Ast::Ast(){
     type = INT;
     num = 0;
     id = "";
 }
 
-ExpTree::~ExpTree(){
+Ast::~Ast(){
     for(auto c: ch){
         delete c;
     }
 }
 
-void ExpTree::add(ExpTree* c){
+void Ast::add(Ast* c){
     ch.push_back(c);
 }
 
-void ExpTree::print_self(){
+void Ast::print_self(){
     switch(type){
         case SEQ:
             for(auto c: ch){
@@ -59,6 +59,7 @@ void ExpTree::print_self(){
         case MUL:
         case DIV:
         case SET:
+        case EQ:
             cerr << "(";
             ch[0]->print_self();
             cerr << " ";
@@ -77,6 +78,9 @@ void ExpTree::print_self(){
                     break;
                 case SET:
                     cerr << ":=";
+                    break;
+                case EQ:
+                    cerr << "==";
                     break;
             }
             cerr << " ";
@@ -104,6 +108,18 @@ void ExpTree::print_self(){
             break;
         case INP:
             cerr << "input";
+            break;
+        case NOT:
+            cerr << "!";
+            ch[0]->print_self();
+            break;
+        case IF:
+            cerr << "if ";
+            ch[0]->print_self();
+            cerr << " then ";
+            ch[1]->print_self();
+            cerr << " else ";
+            ch[2]->print_self();
             break;
     }
 }
