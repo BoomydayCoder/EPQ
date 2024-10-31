@@ -53,6 +53,8 @@
 
 %right ASSIGN;
 %right '?' ':';
+%left '|';
+%left '&';
 %right '!';
 %left '=';
 %left '+' '-';
@@ -86,6 +88,8 @@ exp: ID ASSIGN exp {$$ = new Ast(SET, {new Ast(ID, $1), move($3)}); delete $1;}
     | exp '*' exp   { $$ = new Ast(MUL, {move($1), move($3)}); }
     | exp '/' exp   { $$ = new Ast(DIV, {move($1), move($3)}); }
     | exp '=' exp   { $$ = new Ast(EQ, {move($1), move($3)}); }
+    | exp '|' exp   { $$ = new Ast(OR, {move($1), move($3)}); }
+    | exp '&' exp   { $$ = new Ast(AND, {move($1), move($3)}); }
     | '!' exp       { $$ = new Ast(NOT, {move($2)}); }
     | '-' exp %prec UMINUS { $$ = new Ast(NEG, {move($2)}); }
     | '(' exp ')'   { $$ = $2; }

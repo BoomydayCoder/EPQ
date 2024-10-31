@@ -148,19 +148,33 @@ void Compiler::compile(Ast* exp){
         case IF: {
             begin_scope();
             compile(exp->ch[0]);
-            int j_else = prog.code.size();
-            prog.push_byte(OP_JMP_F);
-            prog.push_byte(OP_NULL);
-            prog.push_byte(OP_NULL);
+            int j_else = prog.push_jump(OP_JMP_F);
+            prog.push_byte(OP_POP);
             compile(exp->ch[1]);
-            int j_end = prog.code.size();
-            prog.push_byte(OP_JMP);
-            prog.push_byte(OP_NULL);
-            prog.push_byte(OP_NULL);
-            prog.patch_short(j_else, prog.code.size() - j_else);
+            int j_end = prog.push_jump(OP_JMP);
+            prog.patch_short(j_else);
+            prog.push_byte(OP_POP);
             compile(exp->ch[2]);
-            prog.patch_short(j_end, prog.code.size() - j_end);
+            prog.patch_short(j_end);
             end_scope();
+            break;
+        }
+        case AND: {
+            compile(exp->ch[0]);
+            int j_end = prog.push_jump(OP_JMP_F);
+            prog.push_byte(OP_POP);
+            compile(exp->ch[1]);
+            prog.patch_short(j_end);
+            break;
+        }
+        case OR: {
+            compile(exp->ch[0]);
+            int j_skip = prog.push_jump(OP_JMP_F);
+            int j_end = prog.push_jump(OP_JMP);
+            prog.patch_short(j_skip);
+            prog.push_byte(OP_POP);
+            compile(exp->ch[1]);
+            prog.patch_short(j_end);
             break;
         }
     }

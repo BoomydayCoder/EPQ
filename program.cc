@@ -8,6 +8,14 @@ void Program::push_byte(uint8_t b){
     code.push_back(b);
 }
 
+int Program::push_jump(uint8_t b){
+    int sz = code.size();
+    code.push_back(b);
+    code.push_back(OP_NULL);
+    code.push_back(OP_NULL);
+    return sz;
+}
+
 void Program::push_const(Value v){
     push_byte(OP_CONST);
     push_byte(add_const(v));
@@ -18,7 +26,8 @@ int Program::add_const(Value v){
     return consts.size() - 1;
 }
 
-void Program::patch_short(int jmp_start, int s){
+void Program::patch_short(int jmp_start){
+    int s =  code.size() - jmp_start;
     s -= 3;
     if (s > UINT16_MAX){
         cerr << "Jump too far" << endl;

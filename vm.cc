@@ -127,7 +127,7 @@ bool VM::run(){
                 stk.push_back(peek(0));
                 break;
             case OP_JMP_F:
-                pop() ? read_short() : ip += read_short(); // ip += (bool(pop())-1)*read_short();  - will benchmark later
+                peek(0) ? read_short() : ip += read_short(); // ip += (bool(pop())-1)*read_short();  - will benchmark later
                 break;
             case OP_JMP:
                 ip += read_short(); 

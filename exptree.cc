@@ -60,6 +60,8 @@ void Ast::print_self(){
         case DIV:
         case SET:
         case EQ:
+        case AND:
+        case OR:
             cerr << "(";
             ch[0]->print_self();
             cerr << " ";
@@ -81,6 +83,12 @@ void Ast::print_self(){
                     break;
                 case EQ:
                     cerr << "==";
+                    break;
+                case AND:
+                    cerr << "&&";
+                    break;
+                case OR:
+                    cerr << "||";
                     break;
             }
             cerr << " ";

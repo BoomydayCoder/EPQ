@@ -20,9 +20,10 @@ class Program {
         vector<uint8_t> code;
         vector<Value> consts; // the constant table
         void push_byte(uint8_t b);
+        int push_jump(uint8_t b);
         int add_const(Value v); // returns the index of the constant
         void push_const(Value v);
-        void patch_short(int jmp_start, int s);
+        void patch_short(int jmp_start);
         void print_self();
 };
 
