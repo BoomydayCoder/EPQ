@@ -4,6 +4,7 @@
 void Compiler::resolve_globals(Ast* exp){
     switch(exp->type){
         case BLK:
+        case FOR:
             break;
         case IF:
             resolve_globals(exp->ch[0]);
@@ -217,6 +218,26 @@ void Compiler::compile(Ast* exp){
             prog.patch_jump(j_end);
             prog.push_byte(OP_POP);
             break;
+        }
+        case FOR: {
+            begin_scope();
+            compile(exp->ch[0]); // initialiser
+
+            int loop_start = prog.code.size();
+            compile(exp->ch[1]); // condition
+            int j_end = prog.push_jump(OP_JMP_F);
+            prog.push_byte(OP_POP);
+            begin_scope();
+            compile(exp->ch[3]); // body
+            end_scope();
+            compile(exp->ch[2]); // increment
+            prog.push_loop(loop_start);
+            prog.patch_jump(j_end);
+            prog.push_byte(OP_POP);
+
+            end_scope();
+            break;
+
         }
     }
 }

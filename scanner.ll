@@ -40,7 +40,8 @@ blank [ \t]
 typedef yy::parser::token token;
 %}
         /* Convert ints to the actual type of tokens.  */
-[-+*/();{}=!?:&|@]     return yy::parser::token_type (yytext[0]);
+[-+*/();{}=!?:&|@,]     return yy::parser::token_type (yytext[0]);
+
 
 ":="       return token::ASSIGN;
 ">>"   return token::PRINT;
@@ -50,6 +51,8 @@ typedef yy::parser::token token;
 "!=" return token::NE;
 ">"       return token::GT;
 "<"       return token::LT;
+"[" return yy::parser::token_type ('[');
+"]" return yy::parser::token_type (']');
 
 {int}      {
     long n = strtol (yytext, NULL, 10);

@@ -78,9 +78,10 @@ stmt: ';' {$$ = new Ast(SEQ);}
     | exp ';' {$$ = new Ast(EXP, {move($1)});}
     | PRINT exp ';' {$$ = new Ast(PRINT, {move($2)});}
     | block {$$ = $1;}
-    | exp '?' stmt ':' stmt {$$ = new Ast(IF, {move($1), move($3), move($5)});}
-    | exp '?' stmt {$$ = new Ast(IF, {move($1), move($3), new Ast(SEQ)});}
-    | exp '@' stmt {$$ = new Ast(WHL, {move($1), move($3)});}
+    | '[' exp ']' '?' stmt ':' stmt {$$ = new Ast(IF, {move($2), move($5), move($7)});}
+    | '[' exp ']' '?' stmt {$$ = new Ast(IF, {move($2), move($5), new Ast(SEQ)});}
+    | '[' exp ']' '@' stmt {$$ = new Ast(WHL, {move($2), move($5)});}
+    | '[' stmt ',' exp ',' stmt ']' '@' stmt {$$ = new Ast(FOR, {move($2), move($4), move($6), move($9)});}
     
     
 

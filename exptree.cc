@@ -155,5 +155,15 @@ void Ast::print_self(){
             cerr << " do ";
             ch[1]->print_self();
             break;
+        case FOR:
+            cerr << "for [";
+            ch[0]->print_self();
+            cerr << ", ";
+            ch[1]->print_self();
+            cerr << ", ";
+            ch[2]->print_self();
+            cerr << "] do ";
+            ch[3]->print_self();
+            break;
     }
 }
