@@ -129,7 +129,7 @@ bool VM::run(){
                 ip += read_short(); 
                 break;
             case OP_LOOP:
-                ip += read_short(); 
+                ip -= read_short(); 
                 break;
             default:
                 cerr << "Unknown opcode " << prog.code[ip-1] << endl;

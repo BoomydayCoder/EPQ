@@ -178,12 +178,12 @@ void Compiler::compile(Ast* exp){
             compile(exp->ch[1]);
             end_scope();
             int j_end = prog.push_jump(OP_JMP);
-            prog.patch_short(j_else);
+            prog.patch_jump(j_else);
             prog.push_byte(OP_POP);
             begin_scope();
             compile(exp->ch[2]);
             end_scope();
-            prog.patch_short(j_end);
+            prog.patch_jump(j_end);
          
             break;
         }
@@ -192,17 +192,30 @@ void Compiler::compile(Ast* exp){
             int j_end = prog.push_jump(OP_JMP_F);
             prog.push_byte(OP_POP);
             compile(exp->ch[1]);
-            prog.patch_short(j_end);
+            prog.patch_jump(j_end);
             break;
         }
         case OR: {
             compile(exp->ch[0]);
             int j_skip = prog.push_jump(OP_JMP_F);
             int j_end = prog.push_jump(OP_JMP);
-            prog.patch_short(j_skip);
+            prog.patch_jump(j_skip);
             prog.push_byte(OP_POP);
             compile(exp->ch[1]);
-            prog.patch_short(j_end);
+            prog.patch_jump(j_end);
+            break;
+        }
+        case WHL: {
+            int loop_start = prog.code.size();
+            compile(exp->ch[0]);
+            int j_end = prog.push_jump(OP_JMP_F);
+            prog.push_byte(OP_POP);
+            begin_scope();
+            compile(exp->ch[1]);
+            end_scope();
+            prog.push_loop(loop_start);
+            prog.patch_jump(j_end);
+            prog.push_byte(OP_POP);
             break;
         }
     }

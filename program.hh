@@ -21,10 +21,12 @@ class Program {
         vector<Value> consts; // the constant table
         void push_byte(uint8_t b);
         int push_jump(uint8_t b);
+        void push_loop(int loop_start);
         int add_const(Value v); // returns the index of the constant
         void push_const(Value v);
-        void patch_short(int jmp_start);
+        void patch_jump(int jmp_start);
         void print_self();
+        void push_short(uint16_t s, int loc);
 };
 
 #endif

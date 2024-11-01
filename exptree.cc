@@ -149,5 +149,11 @@ void Ast::print_self(){
             cerr << " else ";
             ch[2]->print_self();
             break;
+        case WHL:
+            cerr << "while ";
+            ch[0]->print_self();
+            cerr << " do ";
+            ch[1]->print_self();
+            break;
     }
 }

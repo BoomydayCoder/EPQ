@@ -52,6 +52,7 @@
 
 
 %right ASSIGN;
+%token '@';
 %right '?' ':';
 %left '|';
 %left '&';
@@ -79,6 +80,7 @@ stmt: ';' {$$ = new Ast(SEQ);}
     | block {$$ = $1;}
     | exp '?' stmt ':' stmt {$$ = new Ast(IF, {move($1), move($3), move($5)});}
     | exp '?' stmt {$$ = new Ast(IF, {move($1), move($3), new Ast(SEQ)});}
+    | exp '@' stmt {$$ = new Ast(WHL, {move($1), move($3)});}
     
     
 
