@@ -12,6 +12,7 @@ class Value {
     public:
         Value ();
         Value (int v);
+        Value (bool v);
         ValueType type;
         variant<int> val;
         void print_self();

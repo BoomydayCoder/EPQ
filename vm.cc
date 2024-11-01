@@ -75,20 +75,16 @@ bool VM::run(){
                 stk.push_back(Value(-get<int>(pop().val)));
                 break;
             case OP_EQ:
-                if (pop() == pop()){
-                    stk.push_back(Value(1));
-                }
-                else{
-                    stk.push_back(Value(0));
-                }
+                stk.push_back(Value(pop()==pop()));
+                break;
+            case OP_GRTR:
+                BINARY_OP(>);
+                break;
+            case OP_LESS:
+                BINARY_OP(<);
                 break;
             case OP_NOT:
-                if (pop()){
-                    stk.push_back(Value(0));
-                }
-                else{
-                    stk.push_back(Value(1));
-                }
+                stk.push_back(Value(!pop()));  
                 break;
             case OP_CONST:
                 stk.push_back(prog.consts[prog.code[ip++]]);

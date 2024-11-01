@@ -41,9 +41,16 @@ typedef yy::parser::token token;
 %}
         /* Convert ints to the actual type of tokens.  */
 [-+*/();{}=!?:&|]     return yy::parser::token_type (yytext[0]);
+
 ":="       return token::ASSIGN;
 ">>"   return token::PRINT;
 "<<"   return token::INPUT;
+">="  return token::GE;
+"<="  return token::LE;
+"!=" return token::NE;
+">"       return token::GT;
+"<"       return token::LT;
+
 {int}      {
     long n = strtol (yytext, NULL, 10);
     yylval->ival = n;

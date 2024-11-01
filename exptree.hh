@@ -7,7 +7,7 @@
 using namespace std;
 
 enum node_type { // Types of AST nodes
-    ADD, SUB, MUL, DIV, NEG, INT, SEQ, ID, SET, EXP, PRINT, BLK, INP, EQ, NOT, IF, AND, OR,
+    ADD, SUB, MUL, DIV, NEG, INT, SEQ, ID, SET, EXP, PRINT, BLK, INP, EQ, NOT, IF, AND, OR, GT, LT, GE, LE, NE, 
 };
 
 class Ast { // A class that stores the AST

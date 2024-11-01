@@ -35,9 +35,11 @@ void Program::patch_short(int jmp_start){
     }
     code[jmp_start+1] = s >> 8;
     code[jmp_start+2] = s & 0xFF;
+    
 }
 
 void Program::print_self(){
+    
     for(int i=0; i<code.size();++i){
         // add the same spacing for each line
         cerr << i << ":\t";
@@ -59,6 +61,12 @@ void Program::print_self(){
                 break;
             case OP_EQ:
                 cerr << "OP_EQ" << endl;
+                break;
+            case OP_GRTR:
+                cerr << "OP_GRTR" << endl;
+                break;
+            case OP_LESS:
+                cerr << "OP_LESS" << endl;
                 break;
             case OP_NOT:
                 cerr << "OP_NOT" << endl;

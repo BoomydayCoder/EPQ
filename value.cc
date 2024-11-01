@@ -7,6 +7,11 @@ Value::Value(int v){
     get<int>(val) = v;
 }
 
+Value::Value(bool v){
+    type = V_INT;
+    get<int>(val) = (v ? 1 : 0);
+}
+
 Value::Value(){
     type = V_INT;
     get<int>(val) = 0;

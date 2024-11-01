@@ -56,7 +56,7 @@
 %left '|';
 %left '&';
 %right '!';
-%left '=';
+%left '=' GT LT GE LE NE;
 %left '+' '-';
 %left '*' '/';
 %right UMINUS;
@@ -88,6 +88,11 @@ exp: ID ASSIGN exp {$$ = new Ast(SET, {new Ast(ID, $1), move($3)}); delete $1;}
     | exp '*' exp   { $$ = new Ast(MUL, {move($1), move($3)}); }
     | exp '/' exp   { $$ = new Ast(DIV, {move($1), move($3)}); }
     | exp '=' exp   { $$ = new Ast(EQ, {move($1), move($3)}); }
+    | exp GT exp    { $$ = new Ast(GT, {move($1), move($3)}); }
+    | exp LT exp    { $$ = new Ast(LT, {move($1), move($3)}); }
+    | exp GE exp    { $$ = new Ast(GE, {move($1), move($3)}); }
+    | exp LE exp    { $$ = new Ast(LE, {move($1), move($3)}); }
+    | exp NE exp    { $$ = new Ast(NE, {move($1), move($3)}); }
     | exp '|' exp   { $$ = new Ast(OR, {move($1), move($3)}); }
     | exp '&' exp   { $$ = new Ast(AND, {move($1), move($3)}); }
     | '!' exp       { $$ = new Ast(NOT, {move($2)}); }

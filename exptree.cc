@@ -62,6 +62,11 @@ void Ast::print_self(){
         case EQ:
         case AND:
         case OR:
+        case GT:
+        case LT:
+        case GE:
+        case LE:
+        case NE:
             cerr << "(";
             ch[0]->print_self();
             cerr << " ";
@@ -89,6 +94,21 @@ void Ast::print_self(){
                     break;
                 case OR:
                     cerr << "||";
+                    break;
+                case GT:
+                    cerr << ">";
+                    break;
+                case LT:
+                    cerr << "<";
+                    break;
+                case GE:
+                    cerr << ">=";
+                    break;
+                case LE:
+                    cerr << "<=";
+                    break;
+                case NE:
+                    cerr << "!=";
                     break;
             }
             cerr << " ";

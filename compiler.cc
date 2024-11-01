@@ -4,8 +4,11 @@
 void Compiler::resolve_globals(Ast* exp){
     switch(exp->type){
         case BLK:
-        case IF:
             break;
+        case IF:
+            resolve_globals(exp->ch[0]);
+            break;
+
         case SET:
             if(global_index.find(exp->ch[0]->id) == global_index.end()){
                 global_index[exp->ch[0]->id] = global_index.size();
@@ -39,6 +42,7 @@ void Compiler::end_scope(){
 }
 
 void Compiler::compile(Ast* exp){
+  
     switch(exp->type){ // Loop over types of tree node
         case ADD:
             compile(exp->ch[0]);
@@ -68,6 +72,34 @@ void Compiler::compile(Ast* exp){
             compile(exp->ch[0]);
             compile(exp->ch[1]);
             prog.push_byte(OP_EQ);
+            break;
+        case GT:
+            compile(exp->ch[0]);
+            compile(exp->ch[1]);
+            prog.push_byte(OP_GRTR);
+            break;
+        case LT:
+            compile(exp->ch[0]);
+            compile(exp->ch[1]);
+            prog.push_byte(OP_LESS);
+            break;
+        case GE: // not less
+            compile(exp->ch[0]);
+            compile(exp->ch[1]);
+            prog.push_byte(OP_LESS);
+            prog.push_byte(OP_NOT);
+            break;
+        case LE: // not greater
+            compile(exp->ch[0]);
+            compile(exp->ch[1]);
+            prog.push_byte(OP_GRTR);
+            prog.push_byte(OP_NOT);
+            break;
+        case NE: // not equal
+            compile(exp->ch[0]);
+            compile(exp->ch[1]);
+            prog.push_byte(OP_EQ);
+            prog.push_byte(OP_NOT);
             break;
         case NOT:
             compile(exp->ch[0]);
@@ -131,32 +163,28 @@ void Compiler::compile(Ast* exp){
         case BLK: {
 
                 begin_scope();
-
                 for(auto c: exp->ch){
                     compile(c);
-                }
-                // free all the variables in the block
-                int to_remove = local_counts.back() - local_counts[local_counts.size()-2];
-                for (int i=0; i<to_remove; ++i){
-                    prog.push_byte(OP_POP);
-                    local_index.erase(local_names.back());
-                    local_names.pop_back();
                 }
                 end_scope();
                 break;
             }
         case IF: {
-            begin_scope();
+            
             compile(exp->ch[0]);
             int j_else = prog.push_jump(OP_JMP_F);
             prog.push_byte(OP_POP);
+            begin_scope();
             compile(exp->ch[1]);
+            end_scope();
             int j_end = prog.push_jump(OP_JMP);
             prog.patch_short(j_else);
             prog.push_byte(OP_POP);
+            begin_scope();
             compile(exp->ch[2]);
-            prog.patch_short(j_end);
             end_scope();
+            prog.patch_short(j_end);
+         
             break;
         }
         case AND: {

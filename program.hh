@@ -7,7 +7,7 @@
 using namespace std;
 
 enum op_code {
-    OP_ADD, OP_SUB, OP_MUL, OP_DIV, OP_EQ, OP_NOT, OP_NEG, OP_CONST, OP_PRINT, OP_INPUT, OP_POP, OP_SET_GLOBAL, OP_GET_GLOBAL, OP_SET_LOCAL, OP_GET_LOCAL, OP_DEF_LOCAL, OP_JMP_F, OP_JMP, OP_LOOP, OP_NULL,
+    OP_ADD, OP_SUB, OP_MUL, OP_DIV, OP_EQ, OP_LESS, OP_GRTR, OP_NOT, OP_NEG, OP_CONST, OP_PRINT, OP_INPUT, OP_POP, OP_SET_GLOBAL, OP_GET_GLOBAL, OP_SET_LOCAL, OP_GET_LOCAL, OP_DEF_LOCAL, OP_JMP_F, OP_JMP, OP_LOOP, OP_NULL,
 }; // The operations of our bytecode:
 // OP_ADD, OP_SUB, OP_MUL, OP_DIV: binary operations pushing and popping the stack
 // OP_NEG: unary operation pushing and popping the stack

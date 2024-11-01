@@ -163,7 +163,12 @@ namespace yy {
      NUMBER = 260,
      ID = 261,
      INPUT = 262,
-     UMINUS = 263
+     NE = 263,
+     LE = 264,
+     GE = 265,
+     LT = 266,
+     GT = 267,
+     UMINUS = 268
    };
 
     };
@@ -241,7 +246,7 @@ namespace yy {
     typedef unsigned char token_number_type;
     /* Tables.  */
     /// For a state, the index in \a yytable_ of its portion.
-    static const signed char yypact_[];
+    static const short int yypact_[];
     static const signed char yypact_ninf_;
 
     /// For a state, default rule to reduce.
@@ -340,7 +345,7 @@ namespace yy {
 } // yy
 
 /* Line 35 of lalr1.cc  */
-#line 344 "parser.tab.hh"
+#line 349 "parser.tab.hh"
 
 
 
